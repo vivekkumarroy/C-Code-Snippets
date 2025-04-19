@@ -46,7 +46,7 @@ Explanation 1
 
 int is_evil_number(int n) {
     
-    // Your code here to count 1s in binary
+    
     
      int count=0;
      int rem=0;
