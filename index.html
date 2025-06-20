@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Analyzer Pro</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6c63ff;
+            --primary-light: #8b85ff;
+            --secondary: #4a42e6;
+            --light: #f8f9fa;
+            --lighter: #f1f3f5;
+            --dark: #212529;
+            --darker: #0e0e11;
+            --white: #ffffff;
+            --shadow: 0 8px 24px rgba(0,0,0,0.08);
+            --shadow-hover: 0 12px 32px rgba(0,0,0,0.12);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        @supports (font-variation-settings: normal) {
+            * { font-family: 'Inter var', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; }
+        }
+        body {
+            background-color: var(--lighter);
+            color: var(--darker);
+            line-height: 1.6;
+        }
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        /* Header & Navigation */
+        header {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--darker);
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="2"><circle cx="50" cy="50" r="45"/></svg>');
+            opacity: 0.1;
+            pointer-events: none;
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 16px;
+            font-weight: 800;
+        }
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .cta-button {
+            padding: 14px 36px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .cta-button.primary {
+            background-color: var(--white);
+            color: var(--primary);
+        }
+        .cta-button.secondary {
+            background-color: transparent;
+            color: var(--white);
+            border: 2px solid var(--white);
+        }
+        .cta-button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+        }
+        /* How It Works */
+        .how-it-works {
+            padding: 80px 0;
+            background-color: var(--white);
+            position: relative;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 48px;
+            font-weight: 700;
+        }
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+            margin: 0 auto;
+            max-width: 900px;
+        }
+        .step {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 40px 24px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .step:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+        .step-icon {
+            font-size: 2.5rem;
+            margin-bottom: 24px;
+            color: var(--primary);
+        }
+        .step h3 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        /* Features */
+        .features {
+            padding: 80px 0;
+            background-color: var(--lighter);
+        }
+        .feature-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+        }
+        .feature-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 40px 24px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 24px;
+            color: var(--primary);
+        }
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        /* Testimonials */
+        .testimonials {
+            padding: 80px 0;
+            background-color: var(--white);
+        }
+        .testimonial-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+        }
+        .testimonial-card {
+            background: var(--lighter);
+            border-radius: 16px;
+            padding: 40px 24px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .testimonial-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+        .testimonial-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 2rem;
+            font-weight: 600;
+        }
+        .testimonial-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        /* Bottom CTA */
+        .bottom-cta {
+            padding: 100px 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .bottom-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"><circle cx="50" cy="50" r="45"/></svg>');
+            opacity: 0.1;
+            pointer-events: none;
+        }
+        .bottom-cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 24px;
+            font-weight: 700;
+        }
+        /* Footer */
+        footer {
+            background-color: var(--darker);
+            color: var(--white);
+            padding: 60px 0 30px;
+        }
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .footer-links a:hover {
+            color: var(--primary-light);
+        }
+        .social-icons {
+            display: flex;
+            gap: 16px;
+        }
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s ease;
+        }
+        .social-icon:hover {
+            background-color: var(--primary);
+        }
+        .social-icon i {
+            color: var(--white);
+            font-size: 1.2rem;
+        }
+        .copyright {
+            text-align: center;
+            margin-top: 40px;
+            color: var(--lighter);
+            font-size: 0.9rem;
+        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1.1rem; }
+            .cta-buttons { flex-direction: column; align-items: center; }
+            .cta-button { width: 100%; max-width: 240px; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">Website Analyzer Pro</div>
+                <div class="nav-links">
+                    <a href="#">Home</a>
+                    <a href="#">Analyze URL</a>
+                    <a href="#">Analyze HTML</a>
+                    <a href="#">Reports</a>
+                    <a href="#">Profile</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <h1>Analyze Websites Like a Pro</h1>
+                <p>Get instant insights on any URL or HTML snippet with advanced analytics and actionable recommendations.</p>
+                <div class="cta-buttons">
+                    <a href="#" class="cta-button primary">Try Now <i class="fas fa-arrow-right"></i></a>
+                    <a href="#" class="cta-button secondary">Learn More</a>
+                </div>
+            </div>
+        </section>
+        <!-- How It Works -->
+        <section class="how-it-works">
+            <div class="container">
+                <h2 class="section-title">How It Works</h2>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-icon"><i class="fas fa-link"></i></div>
+                        <h3>Enter URL</h3>
+                        <p>Paste the website address you want to analyze.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon"><i class="fas fa-chart-line"></i></div>
+                        <h3>Get Results</h3>
+                        <p>Receive a detailed report in seconds.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon"><i class="fas fa-tools"></i></div>
+                        <h3>Take Action</h3>
+                        <p>Fix issues and improve your website.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Features -->
+        <section class="features">
+            <div class="container">
+                <h2 class="section-title">Key Features</h2>
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                        <h3>Instant Analysis</h3>
+                        <p>Quickly scan any URL for issues.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-file-alt"></i></div>
+                        <h3>Detailed Reports</h3>
+                        <p>Get actionable insights and recommendations.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="fas fa-lock"></i></div>
+                        <h3>Secure & Private</h3>
+                        <p>Your data is always protected.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Testimonials -->
+        <section class="testimonials">
+            <div class="container">
+                <h2 class="section-title">What Our Users Say</h2>
+                <div class="testimonial-cards">
+                    <div class="testimonial-card">
+                        <div class="testimonial-avatar">A</div>
+                        <h3>Alex</h3>
+                        <p>"This tool saved me hours of manual checks!"</p>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-avatar">P</div>
+                        <h3>Priya</h3>
+                        <p>"The reports are clear and easy to understand."</p>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-avatar">S</div>
+                        <h3>Sam</h3>
+                        <p>"Highly recommended for web developers."</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Bottom CTA -->
+        <section class="bottom-cta">
+            <div class="container">
+                <h2>Ready to Get Started?</h2>
+                <a href="#" class="cta-button primary">Start Analyzing Now <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="#">Home</a>
+                    <a href="#">Analyze URL</a>
+                    <a href="#">Analyze HTML</a>
+                    <a href="#">Reports</a>
+                    <a href="#">Profile</a>
+                </div>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 Website Analyzer Pro. All rights reserved.
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
