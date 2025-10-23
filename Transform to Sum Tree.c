@@ -52,18 +52,18 @@ struct Node
 
 class Solution {
   public:
-    int post(Node *root) {
+    int postIncrement(Node *root) {
         // Base case
         if (root == NULL)
             return 0;
-        int old_val = root->data;
-        int l = post(root->left);
-        int r = post(root->right);
+        int oldVal = root->data;
+        int l = postIncrement(root->left);
+        int r = postIncrement(root->right);
         root->data = l+ r;
-        return root->data + old_val;
+        return root->data + oldVal;
     }
     
     void toSumTree(Node *node) {
-        post(node);
+        postIncrement(node);
     }
 };
