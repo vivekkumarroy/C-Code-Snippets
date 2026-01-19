@@ -43,6 +43,31 @@ Constraints:
 
 
 
+class Solution {
+  public:
+    int nthTribonacci(int n) {
+        // code here
+        int num1 = 0;
+        int num2 = 1,num3 = 1;
+        
+        if(n == 0)return 0;
+        if(n <=2) return 1;
+        int ans = 0;
+        for(int i = 3;i<=n;i++){
+            ans = num1 + num2 + num3;
+            num1 = num2;
+            num2 = num3;
+            num3 = ans;
+        }
+        return num3;
+    }
+};
+
+
+
+
+
+
 /* A binary tree node
 struct Node
 {
